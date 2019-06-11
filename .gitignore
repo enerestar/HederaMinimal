@@ -1,0 +1,8 @@
+
+# Created by https://www.gitignore.io/api/vscode
+# Edit at https://www.gitignore.io/?templates=vscode
+
+#!! ERROR: vscode is undefined. Use list command to see defined gitignore types !!#
+.idea/
+.env
+# End of https://www.gitignore.io/api/vscode
