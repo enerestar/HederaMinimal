@@ -5,6 +5,7 @@ import com.hedera.hashgraph.sdk.account.AccountId;
 import com.hedera.hashgraph.sdk.crypto.ed25519.Ed25519PrivateKey;
 
 import com.hedera.hashgraph.sdk.Client;
+import com.hedera.hashgraph.sdk.crypto.ed25519.Ed25519PublicKey;
 import io.github.cdimascio.dotenv.Dotenv;
 
 
@@ -34,8 +35,11 @@ public class clientExample {
 
         // 1. Generate a Ed25519 private, public key pair
 
-        var newKey = Ed25519PrivateKey.generate();
-        var newPublicKey = newKey.getPublicKey();
+//        var newKey = Ed25519PrivateKey.generate();
+//        var newPublicKey = newKey.getPublicKey();
+
+        var newKey = Ed25519PrivateKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PRIVATE_KEY_2"));
+        var newPublicKey = Ed25519PublicKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PUBLIC_KEY_2"));
 
         System.out.println("private key = " + newKey);
         System.out.println("public key = " + newPublicKey);
@@ -46,7 +50,8 @@ public class clientExample {
 
         // 3. Create new account on Hedera
 
-        var initialBalance = 10000;
+        // In TINYBARS :D
+        var initialBalance = 500000;
         var newAccountId = client.createAccount(newPublicKey, initialBalance).toString();
 
         System.out.println(newAccountId);
