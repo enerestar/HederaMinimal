@@ -35,18 +35,18 @@ public class clientExample {
 
         // 1. Generate a Ed25519 private, public key pair
 
-//        var newKey = Ed25519PrivateKey.generate();
-//        var newPublicKey = newKey.getPublicKey();
+        var newKey = Ed25519PrivateKey.generate();
+        var newPublicKey = newKey.getPublicKey();
 
-        var newKey = Ed25519PrivateKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PRIVATE_KEY_2"));
-        var newPublicKey = Ed25519PublicKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PUBLIC_KEY_2"));
+//        var newKey = Ed25519PrivateKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PRIVATE_KEY"));
+//        var newPublicKey = Ed25519PublicKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PUBLIC_KEY"));
 
         System.out.println("private key = " + newKey);
         System.out.println("public key = " + newPublicKey);
 
         // 2. Initialize Hedera client
 
-        var client = hederaClient();
+        var client = hederaClient().setMaxTransactionFee(100000000);
 
         // 3. Create new account on Hedera
 

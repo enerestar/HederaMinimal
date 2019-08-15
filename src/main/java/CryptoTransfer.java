@@ -11,8 +11,8 @@ public final class CryptoTransfer {
         var operatorId = ExampleHelper.getOperatorId();
         var client = ExampleHelper.createHederaClient();
 
-        var recipientId = AccountId.fromString("0.0.1004");
-        var amount = new BigInteger("5000000000000");
+        var recipientId = AccountId.fromString("0.0.3620");
+        var amount = new BigInteger("5000000");
 
         var senderBalanceBefore = client.getAccountBalance(operatorId);
         var receiptBalanceBefore = client.getAccountBalance(recipientId);
