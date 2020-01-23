@@ -1,15 +1,18 @@
 import java.util.Map;
 
-import com.hedera.hashgraph.sdk.HederaException;
+import com.hedera.hashgraph.sdk.HederaStatusException;
+import com.hedera.hashgraph.sdk.TransactionId;
+import com.hedera.hashgraph.sdk.TransactionReceipt;
+import com.hedera.hashgraph.sdk.account.AccountBalanceQuery;
+import com.hedera.hashgraph.sdk.account.AccountCreateTransaction;
 import com.hedera.hashgraph.sdk.account.AccountId;
 import com.hedera.hashgraph.sdk.crypto.ed25519.Ed25519PrivateKey;
 
 import com.hedera.hashgraph.sdk.Client;
-import com.hedera.hashgraph.sdk.crypto.ed25519.Ed25519PublicKey;
 import io.github.cdimascio.dotenv.Dotenv;
 
 
-public class clientExample {
+public class ClientExample {
 
     public static Client hederaClient() {
 
@@ -31,12 +34,12 @@ public class clientExample {
         return hederaClient;
     }
 
-    public static void main(String[] args) throws HederaException {
+    public static void main(String[] args) throws HederaStatusException {
 
         // 1. Generate a Ed25519 private, public key pair
 
         var newKey = Ed25519PrivateKey.generate();
-        var newPublicKey = newKey.getPublicKey();
+        var newPublicKey = newKey.publicKey;
 
 //        var newKey = Ed25519PrivateKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PRIVATE_KEY"));
 //        var newPublicKey = Ed25519PublicKey.fromString(Dotenv.load().get("KEYGEN_MOBILE_PUBLIC_KEY"));
@@ -52,14 +55,21 @@ public class clientExample {
 
         // In TINYBARS :D
         var initialBalance = 500000;
-        var newAccountId = client.createAccount(newPublicKey, initialBalance).toString();
 
+        TransactionId transactionId = new AccountCreateTransaction()
+                .setInitialBalance(initialBalance)
+                .setKey(newPublicKey)
+                .execute(client);
+
+        TransactionReceipt receipt = transactionId.getReceipt(client);
+        AccountId newAccountId = receipt.getAccountId();
         System.out.println(newAccountId);
 
         // 4. Check new account balance 
 
-        var accountBalance = client.getAccountBalance(AccountId.fromString(newAccountId));
-
-        System.out.println(accountBalance);
+        var hbar = new AccountBalanceQuery()
+                .setAccountId(newAccountId)
+                .execute(client);
+        System.out.println(hbar);
     }
 }
