@@ -68,6 +68,9 @@ public class HederaConsensus {
                     .getReceipt(client);
 
             Thread.sleep(2500);
+            if (i == 12) {
+                break;
+            }
         }
     }
 }
